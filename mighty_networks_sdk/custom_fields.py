@@ -17,26 +17,22 @@ class CustomFieldsResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all custom fields in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of custom fields
+            List of custom fields
 
         Example:
             >>> client.custom_fields.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/custom_fields"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/custom_fields"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(self, network_id: int, field_id: int) -> Dict[str, Any]:
@@ -53,7 +49,7 @@ class CustomFieldsResource(BaseResource):
         Example:
             >>> client.custom_fields.get(network_id=12345, field_id=456)
         """
-        endpoint = f"admin/v1/networks/{network_id}/custom_fields/{field_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/custom_fields/{field_id}/"
         return self._get(endpoint)
 
     def create(
@@ -94,7 +90,7 @@ class CustomFieldsResource(BaseResource):
             ...     options=["Technology", "Healthcare", "Finance", "Other"]
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/custom_fields"
+        endpoint = f"/admin/v1/networks/{network_id}/custom_fields"
         data = {
             "name": name,
             "field_type": field_type,
@@ -131,7 +127,7 @@ class CustomFieldsResource(BaseResource):
             ...     required=True
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/custom_fields/{field_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/custom_fields/{field_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(self, network_id: int, field_id: int) -> Dict[str, Any]:
@@ -148,7 +144,7 @@ class CustomFieldsResource(BaseResource):
         Example:
             >>> client.custom_fields.delete(network_id=12345, field_id=456)
         """
-        endpoint = f"admin/v1/networks/{network_id}/custom_fields/{field_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/custom_fields/{field_id}/"
         return self._delete(endpoint)
 
     def get_member_values(
@@ -172,7 +168,7 @@ class CustomFieldsResource(BaseResource):
             ...     user_id=99999
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/members/{user_id}/custom_fields"
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/custom_fields"
         return self._get(endpoint)
 
     def update_member_values(
@@ -202,5 +198,5 @@ class CustomFieldsResource(BaseResource):
             ...     }
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/members/{user_id}/custom_fields"
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/custom_fields"
         return self._patch(endpoint, json=field_values)

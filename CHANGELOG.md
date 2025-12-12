@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bearer token authentication
 - Comprehensive error handling with specific exception classes
 - Full type hints for better IDE support
-- Pagination support for list endpoints
 - Detailed documentation and examples
 - Unit tests with pytest
 - Code quality tools (black, flake8, mypy)
@@ -40,7 +39,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic error handling and response parsing
 - Data models for common API objects
 - Batch operation examples
-- Pagination helper examples
 - Comprehensive error handling examples
 
 ### Documentation

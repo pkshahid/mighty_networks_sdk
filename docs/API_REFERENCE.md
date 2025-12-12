@@ -69,8 +69,6 @@ List all spaces in a network.
 ```python
 client.spaces.list(
     network_id: int,
-    page: int = 1,
-    per_page: int = 25
 ) -> Dict[str, Any]
 ```
 
@@ -136,8 +134,6 @@ List members in a network or space.
 client.members.list(
     network_id: int,
     space_id: Optional[int] = None,
-    page: int = 1,
-    per_page: int = 25
 ) -> Dict[str, Any]
 ```
 
@@ -221,8 +217,6 @@ List posts in a space.
 client.posts.list(
     network_id: int,
     space_id: int,
-    page: int = 1,
-    per_page: int = 25
 ) -> Dict[str, Any]
 ```
 
@@ -316,8 +310,6 @@ List events in a space.
 client.events.list(
     network_id: int,
     space_id: int,
-    page: int = 1,
-    per_page: int = 25
 ) -> Dict[str, Any]
 ```
 
@@ -386,8 +378,6 @@ client.events.get_attendees(
     network_id: int,
     space_id: int,
     event_id: int,
-    page: int = 1,
-    per_page: int = 25
 ) -> Dict[str, Any]
 ```
 
@@ -511,43 +501,3 @@ class Event:
 ```
 
 ---
-
-## Pagination
-
-All list endpoints return paginated results with the following structure:
-
-```python
-{
-    "items": [...],  # List of items
-    "links": {
-        "self": "...",   # Current page URL
-        "next": "...",   # Next page URL (if available)
-        "prev": "..."    # Previous page URL (if available)
-    }
-}
-```
-
-**Example: Iterate through all pages**
-
-```python
-def get_all_items(client, network_id, space_id):
-    all_items = []
-    page = 1
-
-    while True:
-        response = client.members.list(
-            network_id=network_id,
-            space_id=space_id,
-            page=page,
-            per_page=100
-        )
-
-        all_items.extend(response['items'])
-
-        if 'next' not in response['links']:
-            break
-
-        page += 1
-
-    return all_items
-```

@@ -46,8 +46,7 @@ print(f"Members: {space['member_count']}")
 # List all members in a space
 members = client.members.list(
     network_id=12345,
-    space_id=67890,
-    per_page=50
+    space_id=67890
 )
 
 for member in members['items']:
@@ -127,53 +126,6 @@ except ResourceNotFoundError:
 except APIError as e:
     print(f"API error: {e}")
 ```
-
-## Pagination
-
-Handle paginated results:
-
-```python
-# Method 1: Manual pagination
-page = 1
-while True:
-    response = client.members.list(
-        network_id=12345,
-        space_id=67890,
-        page=page,
-        per_page=100
-    )
-
-    # Process members
-    for member in response['items']:
-        print(member['email'])
-
-    # Check for next page
-    if 'next' not in response['links']:
-        break
-
-    page += 1
-
-# Method 2: Helper function
-def get_all_members(client, network_id, space_id):
-    all_members = []
-    page = 1
-
-    while True:
-        response = client.members.list(
-            network_id=network_id,
-            space_id=space_id,
-            page=page,
-            per_page=100
-        )
-
-        all_members.extend(response['items'])
-
-        if 'next' not in response['links']:
-            break
-
-        page += 1
-
-    return all_members
 
 # Use it
 members = get_all_members(client, 12345, 67890)

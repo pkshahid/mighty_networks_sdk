@@ -18,9 +18,7 @@ class PostsResource(BaseResource):
     def list(
         self,
         network_id: int,
-        space_id: int,
-        page: int = 1,
-        per_page: int = 25
+        space_id: int
     ) -> Dict[str, Any]:
         """
         List posts in a space.
@@ -28,17 +26,17 @@ class PostsResource(BaseResource):
         Args:
             network_id: The network ID
             space_id: The space ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of posts
+            List of posts
 
         Example:
             >>> client.posts.list(network_id=12345, space_id=67890)
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/posts"
+        params = {
+            'space_id' : space_id
+        }
         return self._get(endpoint, params=params)
 
     def get(
@@ -65,7 +63,7 @@ class PostsResource(BaseResource):
             ...     post_id=11111
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/"
         return self._get(endpoint)
 
     def create(
@@ -73,8 +71,9 @@ class PostsResource(BaseResource):
         network_id: int,
         space_id: int,
         title: str,
-        content: str,
-        is_pinned: bool = False,
+        description: str,
+        post_type: str,
+        notify: bool = False,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -84,8 +83,9 @@ class PostsResource(BaseResource):
             network_id: The network ID
             space_id: The space ID
             title: Post title
-            content: Post content
-            is_pinned: Whether to pin the post (default: False)
+            description: Post description
+            post_type: Post type
+            notify : Should notify about post?
             **kwargs: Additional post properties
 
         Returns:
@@ -100,11 +100,14 @@ class PostsResource(BaseResource):
             ...     is_pinned=True
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts"
+        endpoint = f"/admin/v1/networks/{network_id}/posts"
+        if notify:
+            endpoint += "?notify=true"
         data = {
             "title": title,
-            "content": content,
-            "is_pinned": is_pinned,
+            "description": content,
+            "post_type": post_type,
+            "space_id" : space_id,
             **kwargs
         }
         return self._post(endpoint, json=data)
@@ -114,6 +117,7 @@ class PostsResource(BaseResource):
         network_id: int,
         space_id: int,
         post_id: int,
+        notify: bool = False,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -123,6 +127,7 @@ class PostsResource(BaseResource):
             network_id: The network ID
             space_id: The space ID
             post_id: The post ID
+            notify: Should notify?
             **kwargs: Post properties to update
 
         Returns:
@@ -133,10 +138,13 @@ class PostsResource(BaseResource):
             ...     network_id=12345,
             ...     space_id=67890,
             ...     post_id=11111,
-            ...     title="Updated Title"
+            ...     title="Updated Title",
+            ...     description="Updated description"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/"
+        if notify:
+            endpoint += "?notify=true"
         return self._patch(endpoint, json=kwargs)
 
     def delete(
@@ -163,59 +171,6 @@ class PostsResource(BaseResource):
             ...     post_id=11111
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/"
         return self._delete(endpoint)
 
-    def pin(
-        self,
-        network_id: int,
-        space_id: int,
-        post_id: int
-    ) -> Dict[str, Any]:
-        """
-        Pin a post.
-
-        Args:
-            network_id: The network ID
-            space_id: The space ID
-            post_id: The post ID
-
-        Returns:
-            Updated post details
-
-        Example:
-            >>> client.posts.pin(
-            ...     network_id=12345,
-            ...     space_id=67890,
-            ...     post_id=11111
-            ... )
-        """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/pin"
-        return self._post(endpoint)
-
-    def unpin(
-        self,
-        network_id: int,
-        space_id: int,
-        post_id: int
-    ) -> Dict[str, Any]:
-        """
-        Unpin a post.
-
-        Args:
-            network_id: The network ID
-            space_id: The space ID
-            post_id: The post ID
-
-        Returns:
-            Updated post details
-
-        Example:
-            >>> client.posts.unpin(
-            ...     network_id=12345,
-            ...     space_id=67890,
-            ...     post_id=11111
-            ... )
-        """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/unpin"
-        return self._post(endpoint)

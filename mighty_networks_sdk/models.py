@@ -89,23 +89,6 @@ class Plan:
 
 
 @dataclass
-class PaginatedResponse:
-    """Represents a paginated API response."""
-    items: List[Dict[str, Any]]
-    links: Dict[str, str]
-
-    @property
-    def has_next(self) -> bool:
-        """Check if there is a next page."""
-        return 'next' in self.links
-
-    @property
-    def next_url(self) -> Optional[str]:
-        """Get the URL for the next page."""
-        return self.links.get('next')
-
-
-@dataclass
 class CustomField:
     """Represents a custom field."""
     id: int

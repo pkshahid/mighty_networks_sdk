@@ -18,8 +18,6 @@ class AbuseReportsResource(BaseResource):
     def list(
         self,
         network_id: int,
-        page: int = 1,
-        per_page: int = 25,
         status: str = "pending"
     ) -> Dict[str, Any]:
         """
@@ -27,12 +25,10 @@ class AbuseReportsResource(BaseResource):
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
             status: Filter by status (pending, resolved, dismissed)
 
         Returns:
-            Paginated list of abuse reports
+            List of abuse reports
 
         Example:
             >>> client.abuse_reports.list(
@@ -40,8 +36,9 @@ class AbuseReportsResource(BaseResource):
             ...     status="pending"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/abuse_reports"
-        params = {"page": page, "per_page": per_page, "status": status}
+        endpoint = f"/admin/v1/networks/{network_id}/abuse_reports"
+        params = {}
+        params['status'] = status
         return self._get(endpoint, params=params)
 
     def get(
@@ -65,7 +62,7 @@ class AbuseReportsResource(BaseResource):
             ...     report_id=555
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/abuse_reports/{report_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/abuse_reports/{report_id}/"
         return self._get(endpoint)
 
     def resolve(
@@ -95,6 +92,6 @@ class AbuseReportsResource(BaseResource):
             ...     notes="Content violated community guidelines"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/abuse_reports/{report_id}/resolve"
+        endpoint = f"/admin/v1/networks/{network_id}/abuse_reports/{report_id}/resolve"
         data = {"action": action, "notes": notes}
         return self._post(endpoint, json=data)

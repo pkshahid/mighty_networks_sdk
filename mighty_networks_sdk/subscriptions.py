@@ -17,26 +17,22 @@ class SubscriptionsResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all subscriptions in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of subscriptions
+            Lsist of subscriptions
 
         Example:
             >>> client.subscriptions.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/subscriptions"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/subscriptions"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -60,7 +56,7 @@ class SubscriptionsResource(BaseResource):
             ...     subscription_id=888
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/subscriptions/{subscription_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/subscriptions/{subscription_id}/"
         return self._get(endpoint)
 
     def cancel(
@@ -87,7 +83,7 @@ class SubscriptionsResource(BaseResource):
             ...     reason="User request"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/subscriptions/{subscription_id}/cancel"
+        endpoint = f"/admin/v1/networks/{network_id}/subscriptions/{subscription_id}/cancel"
         data = {}
         if reason:
             data["reason"] = reason

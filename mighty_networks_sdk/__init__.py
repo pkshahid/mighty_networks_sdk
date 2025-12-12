@@ -35,7 +35,6 @@ from .models import (
     Post,
     Event,
     Plan,
-    PaginatedResponse,
     CustomField,
     Badge
 )
@@ -58,7 +57,6 @@ __all__ = [
     'Post',
     'Event',
     'Plan',
-    'PaginatedResponse',
     'CustomField',
     'Badge',
 ]

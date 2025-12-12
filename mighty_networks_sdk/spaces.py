@@ -17,20 +17,16 @@ class SpacesResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all spaces in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of spaces
+            List of spaces
 
         Example:
             >>> client.spaces.list(network_id=12345)
@@ -39,8 +35,8 @@ class SpacesResource(BaseResource):
                 "links": {"self": "...", "next": "..."}
             }
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/spaces"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(self, network_id: int, space_id: int) -> Dict[str, Any]:
@@ -57,7 +53,7 @@ class SpacesResource(BaseResource):
         Example:
             >>> client.spaces.get(network_id=12345, space_id=67890)
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}"
         return self._get(endpoint)
 
     def create(
@@ -88,7 +84,7 @@ class SpacesResource(BaseResource):
             ...     description="A space for developers"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces"
         data = {
             "name": name,
             "description": description,
@@ -121,7 +117,7 @@ class SpacesResource(BaseResource):
             ...     name="Updated Space Name"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}"
         return self._patch(endpoint, json=kwargs)
 
     def delete(self, network_id: int, space_id: int) -> Dict[str, Any]:
@@ -138,5 +134,5 @@ class SpacesResource(BaseResource):
         Example:
             >>> client.spaces.delete(network_id=12345, space_id=67890)
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}"
         return self._delete(endpoint)

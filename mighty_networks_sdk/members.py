@@ -18,9 +18,7 @@ class MembersResource(BaseResource):
     def list(
         self,
         network_id: int,
-        space_id: Optional[int] = None,
-        page: int = 1,
-        per_page: int = 25
+        space_id: Optional[int] = None
     ) -> Dict[str, Any]:
         """
         List members in a network or space.
@@ -28,11 +26,9 @@ class MembersResource(BaseResource):
         Args:
             network_id: The network ID
             space_id: The space ID (optional, lists network members if not provided)
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of members
+            List of members
 
         Example:
             >>> # List all network members
@@ -42,11 +38,11 @@ class MembersResource(BaseResource):
             >>> client.members.list(network_id=12345, space_id=67890)
         """
         if space_id:
-            endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members"
+            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members"
         else:
-            endpoint = f"admin/v1/networks/{network_id}/members"
+            endpoint = f"/admin/v1/networks/{network_id}/members"
 
-        params = {"page": page, "per_page": per_page}
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -74,9 +70,9 @@ class MembersResource(BaseResource):
             ... )
         """
         if space_id:
-            endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
+            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
         else:
-            endpoint = f"admin/v1/networks/{network_id}/members/{user_id}/"
+            endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
 
         return self._get(endpoint)
 
@@ -117,9 +113,9 @@ class MembersResource(BaseResource):
             ... )
         """
         if space_id:
-            endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
+            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
         else:
-            endpoint = f"admin/v1/networks/{network_id}/members/{user_id}/"
+            endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
 
         data = {k: v for k, v in {
             "role": role,
@@ -155,7 +151,7 @@ class MembersResource(BaseResource):
             ...     space_id=67890
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
         return self._delete(endpoint)
 
     def ban(
@@ -185,7 +181,7 @@ class MembersResource(BaseResource):
             ...     ban_reason="Violation of community guidelines"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/ban"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/ban"
         data = {}
         if ban_reason:
             data["ban_reason"] = ban_reason
@@ -223,7 +219,7 @@ class MembersResource(BaseResource):
             ...     role="member"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/members"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members"
         data = {
             "email": email,
             "role": role

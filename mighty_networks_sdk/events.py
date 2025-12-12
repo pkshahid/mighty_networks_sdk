@@ -18,9 +18,7 @@ class EventsResource(BaseResource):
     def list(
         self,
         network_id: int,
-        space_id: int,
-        page: int = 1,
-        per_page: int = 25
+        space_id: int
     ) -> Dict[str, Any]:
         """
         List events in a space.
@@ -28,17 +26,15 @@ class EventsResource(BaseResource):
         Args:
             network_id: The network ID
             space_id: The space ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of events
+            List of events
 
         Example:
             >>> client.events.list(network_id=12345, space_id=67890)
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -65,7 +61,7 @@ class EventsResource(BaseResource):
             ...     event_id=22222
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
         return self._get(endpoint)
 
     def create(
@@ -111,7 +107,7 @@ class EventsResource(BaseResource):
             ...     max_attendees=50
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events"
         data = {
             "title": title,
             "description": description,
@@ -155,7 +151,7 @@ class EventsResource(BaseResource):
             ...     max_attendees=100
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(
@@ -182,16 +178,14 @@ class EventsResource(BaseResource):
             ...     event_id=22222
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/"
         return self._delete(endpoint)
 
     def get_attendees(
         self,
         network_id: int,
         space_id: int,
-        event_id: int,
-        page: int = 1,
-        per_page: int = 25
+        event_id: int
     ) -> Dict[str, Any]:
         """
         Get event attendees.
@@ -200,11 +194,9 @@ class EventsResource(BaseResource):
             network_id: The network ID
             space_id: The space ID
             event_id: The event ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of attendees
+            List of attendees
 
         Example:
             >>> client.events.get_attendees(
@@ -213,6 +205,6 @@ class EventsResource(BaseResource):
             ...     event_id=22222
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/attendees"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/events/{event_id}/attendees"
+        params = {}
         return self._get(endpoint, params=params)

@@ -17,26 +17,22 @@ class CollectionsResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all collections in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of collections
+            List of collections
 
         Example:
             >>> client.collections.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/collections"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -60,7 +56,7 @@ class CollectionsResource(BaseResource):
             ...     collection_id=666
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections/{collection_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/"
         return self._get(endpoint)
 
     def create(
@@ -89,7 +85,7 @@ class CollectionsResource(BaseResource):
             ...     description="Essential resources for new members"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections"
+        endpoint = f"/admin/v1/networks/{network_id}/collections"
         data = {"name": name, **kwargs}
         if description:
             data["description"] = description
@@ -120,7 +116,7 @@ class CollectionsResource(BaseResource):
             ...     name="Updated Collection Name"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections/{collection_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(
@@ -141,7 +137,7 @@ class CollectionsResource(BaseResource):
         Example:
             >>> client.collections.delete(network_id=12345, collection_id=666)
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections/{collection_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/"
         return self._delete(endpoint)
 
     def add_item(
@@ -171,7 +167,7 @@ class CollectionsResource(BaseResource):
             ...     item_id=11111
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections/{collection_id}/items"
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/items"
         data = {"item_type": item_type, "item_id": item_id}
         return self._post(endpoint, json=data)
 
@@ -199,5 +195,5 @@ class CollectionsResource(BaseResource):
             ...     item_id=88888
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/collections/{collection_id}/items/{item_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/items/{item_id}/"
         return self._delete(endpoint)

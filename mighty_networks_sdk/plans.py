@@ -17,26 +17,22 @@ class PlansResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all plans in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of plans
+            List of plans
 
         Example:
             >>> client.plans.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/plans"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(self, network_id: int, plan_id: int) -> Dict[str, Any]:
@@ -53,7 +49,7 @@ class PlansResource(BaseResource):
         Example:
             >>> client.plans.get(network_id=12345, plan_id=789)
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans/{plan_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/plans/{plan_id}/"
         return self._get(endpoint)
 
     def create(
@@ -93,7 +89,7 @@ class PlansResource(BaseResource):
             ...     trial_days=7
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans"
+        endpoint = f"/admin/v1/networks/{network_id}/plans"
         data = {
             "name": name,
             "description": description,
@@ -130,7 +126,7 @@ class PlansResource(BaseResource):
             ...     name="Premium Plus"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans/{plan_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/plans/{plan_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(self, network_id: int, plan_id: int) -> Dict[str, Any]:
@@ -147,15 +143,13 @@ class PlansResource(BaseResource):
         Example:
             >>> client.plans.delete(network_id=12345, plan_id=789)
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans/{plan_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/plans/{plan_id}/"
         return self._delete(endpoint)
 
     def get_subscribers(
         self,
         network_id: int,
-        plan_id: int,
-        page: int = 1,
-        per_page: int = 25
+        plan_id: int
     ) -> Dict[str, Any]:
         """
         Get subscribers for a specific plan.
@@ -163,15 +157,13 @@ class PlansResource(BaseResource):
         Args:
             network_id: The network ID
             plan_id: The plan ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of subscribers
+            List of subscribers
 
         Example:
             >>> client.plans.get_subscribers(network_id=12345, plan_id=789)
         """
-        endpoint = f"admin/v1/networks/{network_id}/plans/{plan_id}/subscribers"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/plans/{plan_id}/subscribers"
+        params = {}
         return self._get(endpoint, params=params)

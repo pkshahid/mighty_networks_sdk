@@ -18,9 +18,7 @@ class PollsResource(BaseResource):
     def list(
         self,
         network_id: int,
-        space_id: int,
-        page: int = 1,
-        per_page: int = 25
+        space_id: int
     ) -> Dict[str, Any]:
         """
         List polls in a space.
@@ -28,17 +26,15 @@ class PollsResource(BaseResource):
         Args:
             network_id: The network ID
             space_id: The space ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of polls
+            List of polls
 
         Example:
             >>> client.polls.list(network_id=12345, space_id=67890)
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/polls"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/polls"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -65,7 +61,7 @@ class PollsResource(BaseResource):
             ...     poll_id=44444
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
         return self._get(endpoint)
 
     def create(
@@ -100,7 +96,7 @@ class PollsResource(BaseResource):
             ...     allow_multiple=False
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/polls"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/polls"
         data = {
             "question": question,
             "options": options,
@@ -136,7 +132,7 @@ class PollsResource(BaseResource):
             ...     question="Updated question?"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(
@@ -163,5 +159,5 @@ class PollsResource(BaseResource):
             ...     poll_id=44444
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/polls/{poll_id}/"
         return self._delete(endpoint)

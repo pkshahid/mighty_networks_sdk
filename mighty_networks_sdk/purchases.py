@@ -4,7 +4,7 @@ Purchases Resource
 Handles all purchase-related API operations.
 """
 
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from .base_resource import BaseResource
 
 
@@ -17,26 +17,22 @@ class PurchasesResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all purchases in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of purchases
+            List of purchases
 
         Example:
             >>> client.purchases.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/purchases"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/purchases"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(
@@ -60,7 +56,7 @@ class PurchasesResource(BaseResource):
             ...     purchase_id=777
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/purchases/{purchase_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/purchases/{purchase_id}/"
         return self._get(endpoint)
 
     def refund(
@@ -89,7 +85,7 @@ class PurchasesResource(BaseResource):
             ...     reason="Customer request"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/purchases/{purchase_id}/refund"
+        endpoint = f"/admin/v1/networks/{network_id}/purchases/{purchase_id}/refund"
         data = {}
         if amount is not None:
             data["amount"] = amount

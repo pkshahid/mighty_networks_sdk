@@ -17,26 +17,22 @@ class InvitesResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all invitations in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of invitations
+            List of invitations
 
         Example:
             >>> client.invites.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/invites"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/invites"
+        params = {}
         return self._get(endpoint, params=params)
 
     def create(
@@ -68,7 +64,7 @@ class InvitesResource(BaseResource):
             ...     message="Join our amazing community!"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/invites"
+        endpoint = f"/admin/v1/networks/{network_id}/invites"
         data = {"emails": emails, **kwargs}
         if space_id:
             data["space_id"] = space_id
@@ -95,7 +91,7 @@ class InvitesResource(BaseResource):
         Example:
             >>> client.invites.get(network_id=12345, invite_id=999)
         """
-        endpoint = f"admin/v1/networks/{network_id}/invites/{invite_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/invites/{invite_id}/"
         return self._get(endpoint)
 
     def resend(
@@ -116,7 +112,7 @@ class InvitesResource(BaseResource):
         Example:
             >>> client.invites.resend(network_id=12345, invite_id=999)
         """
-        endpoint = f"admin/v1/networks/{network_id}/invites/{invite_id}/resend"
+        endpoint = f"/admin/v1/networks/{network_id}/invites/{invite_id}/resend"
         return self._post(endpoint)
 
     def revoke(
@@ -137,5 +133,5 @@ class InvitesResource(BaseResource):
         Example:
             >>> client.invites.revoke(network_id=12345, invite_id=999)
         """
-        endpoint = f"admin/v1/networks/{network_id}/invites/{invite_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/invites/{invite_id}/"
         return self._delete(endpoint)

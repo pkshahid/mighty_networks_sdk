@@ -17,26 +17,22 @@ class TagsResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all tags in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of tags
+            List of tags
 
         Example:
             >>> client.tags.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/tags"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/tags"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(self, network_id: int, tag_id: int) -> Dict[str, Any]:
@@ -53,7 +49,7 @@ class TagsResource(BaseResource):
         Example:
             >>> client.tags.get(network_id=12345, tag_id=555)
         """
-        endpoint = f"admin/v1/networks/{network_id}/tags/{tag_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/tags/{tag_id}/"
         return self._get(endpoint)
 
     def create(
@@ -79,7 +75,7 @@ class TagsResource(BaseResource):
             ...     name="Announcements"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/tags"
+        endpoint = f"/admin/v1/networks/{network_id}/tags"
         data = {"name": name, **kwargs}
         return self._post(endpoint, json=data)
 
@@ -107,7 +103,7 @@ class TagsResource(BaseResource):
             ...     name="Updated Tag Name"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/tags/{tag_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/tags/{tag_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(self, network_id: int, tag_id: int) -> Dict[str, Any]:
@@ -124,5 +120,5 @@ class TagsResource(BaseResource):
         Example:
             >>> client.tags.delete(network_id=12345, tag_id=555)
         """
-        endpoint = f"admin/v1/networks/{network_id}/tags/{tag_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/tags/{tag_id}/"
         return self._delete(endpoint)

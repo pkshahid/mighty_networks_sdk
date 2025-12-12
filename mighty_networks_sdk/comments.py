@@ -19,9 +19,7 @@ class CommentsResource(BaseResource):
         self,
         network_id: int,
         space_id: int,
-        post_id: int,
-        page: int = 1,
-        per_page: int = 25
+        post_id: int
     ) -> Dict[str, Any]:
         """
         List comments on a post.
@@ -30,11 +28,9 @@ class CommentsResource(BaseResource):
             network_id: The network ID
             space_id: The space ID
             post_id: The post ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of comments
+            List of comments
 
         Example:
             >>> client.comments.list(
@@ -43,42 +39,17 @@ class CommentsResource(BaseResource):
             ...     post_id=11111
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/comments"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/comments"
+        params = {}
         return self._get(endpoint, params=params)
 
-    def create(
-        self,
-        network_id: int,
-        space_id: int,
-        post_id: int,
-        content: str,
-        **kwargs
-    ) -> Dict[str, Any]:
-        """
-        Create a comment on a post.
-
-        Args:
-            network_id: The network ID
-            space_id: The space ID
-            post_id: The post ID
-            content: Comment content
-            **kwargs: Additional comment properties
-
-        Returns:
-            Created comment details
-
-        Example:
-            >>> client.comments.create(
-            ...     network_id=12345,
-            ...     space_id=67890,
-            ...     post_id=11111,
-            ...     content="Great post!"
-            ... )
-        """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/comments"
-        data = {"content": content, **kwargs}
+    def create(self, network_id: int, post_id: int, text: str, reply_to_id: int = None):
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/comments"
+        data = {"text": text}
+        if reply_to_id:
+            data["reply_to_id"] = reply_to_id
         return self._post(endpoint, json=data)
+
 
     def delete(
         self,
@@ -107,5 +78,5 @@ class CommentsResource(BaseResource):
             ...     comment_id=33333
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/comments/{comment_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/comments/{comment_id}/"
         return self._delete(endpoint)

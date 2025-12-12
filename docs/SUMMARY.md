@@ -208,29 +208,6 @@ except APIError as e:
     print(f"API error: {e.status_code}")
 ```
 
-### Pagination
-
-```python
-# Fetch all members across all pages
-all_members = []
-page = 1
-
-while True:
-    response = client.members.list(
-        network_id=12345,
-        space_id=67890,
-        page=page,
-        per_page=100
-    )
-
-    all_members.extend(response['items'])
-
-    if 'next' not in response['links']:
-        break
-
-    page += 1
-```
-
 ## 🧪 Running Tests
 
 ```bash

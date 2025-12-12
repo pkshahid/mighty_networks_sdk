@@ -17,26 +17,22 @@ class BadgesResource(BaseResource):
 
     def list(
         self,
-        network_id: int,
-        page: int = 1,
-        per_page: int = 25
+        network_id: int
     ) -> Dict[str, Any]:
         """
         List all badges in a network.
 
         Args:
             network_id: The network ID
-            page: Page number for pagination (default: 1)
-            per_page: Items per page, max 100 (default: 25)
 
         Returns:
-            Paginated list of badges
+            List of badges
 
         Example:
             >>> client.badges.list(network_id=12345)
         """
-        endpoint = f"admin/v1/networks/{network_id}/badges"
-        params = {"page": page, "per_page": per_page}
+        endpoint = f"/admin/v1/networks/{network_id}/badges"
+        params = {}
         return self._get(endpoint, params=params)
 
     def get(self, network_id: int, badge_id: int) -> Dict[str, Any]:
@@ -53,46 +49,16 @@ class BadgesResource(BaseResource):
         Example:
             >>> client.badges.get(network_id=12345, badge_id=333)
         """
-        endpoint = f"admin/v1/networks/{network_id}/badges/{badge_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/badges/{badge_id}/"
         return self._get(endpoint)
 
-    def create(
-        self,
-        network_id: int,
-        name: str,
-        description: str,
-        image_url: str,
-        **kwargs
-    ) -> Dict[str, Any]:
-        """
-        Create a new badge.
+def create(self, network_id: int, title: str, description: str = "", avatar_id: int = None, color: str = None):
+    endpoint = f"/admin/v1/networks/{network_id}/badges"
+    data = {"title": title, "description": description}
+    if avatar_id is not None: data["avatar_id"] = avatar_id
+    if color is not None: data["color"] = color
+    return self._post(endpoint, json=data)
 
-        Args:
-            network_id: The network ID
-            name: Badge name
-            description: Badge description
-            image_url: Badge image URL
-            **kwargs: Additional badge properties
-
-        Returns:
-            Created badge details
-
-        Example:
-            >>> client.badges.create(
-            ...     network_id=12345,
-            ...     name="Top Contributor",
-            ...     description="Awarded for outstanding contributions",
-            ...     image_url="https://example.com/badge.png"
-            ... )
-        """
-        endpoint = f"admin/v1/networks/{network_id}/badges"
-        data = {
-            "name": name,
-            "description": description,
-            "image_url": image_url,
-            **kwargs
-        }
-        return self._post(endpoint, json=data)
 
     def update(
         self,
@@ -118,7 +84,7 @@ class BadgesResource(BaseResource):
             ...     description="Updated description"
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/badges/{badge_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/badges/{badge_id}/"
         return self._patch(endpoint, json=kwargs)
 
     def delete(self, network_id: int, badge_id: int) -> Dict[str, Any]:
@@ -135,7 +101,7 @@ class BadgesResource(BaseResource):
         Example:
             >>> client.badges.delete(network_id=12345, badge_id=333)
         """
-        endpoint = f"admin/v1/networks/{network_id}/badges/{badge_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/badges/{badge_id}/"
         return self._delete(endpoint)
 
     def award(
@@ -162,6 +128,6 @@ class BadgesResource(BaseResource):
             ...     user_id=99999
             ... )
         """
-        endpoint = f"admin/v1/networks/{network_id}/badges/{badge_id}/award"
+        endpoint = f"/admin/v1/networks/{network_id}/badges/{badge_id}/award"
         data = {"user_id": user_id}
         return self._post(endpoint, json=data)
