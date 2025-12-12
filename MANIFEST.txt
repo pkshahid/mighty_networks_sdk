@@ -1,0 +1,85 @@
+# Mighty Networks Python SDK - File Manifest
+
+Generated: 2025-12-12
+
+## Core SDK Files (5 files)
+
+1. __init__.py                  - Package initialization and exports
+2. client.py                    - Main MightyNetworksClient class with all resources
+3. exceptions.py                - Custom exception classes
+4. models.py                    - Data models (Member, Space, Post, Event, etc.)
+5. base_resource.py             - Base resource class with HTTP methods
+
+## Resource Modules (16 files - 137 endpoints total)
+
+1. spaces.py                    - 19 endpoints for spaces management
+2. members.py                   - 19 endpoints for members management
+3. posts.py                     - 15 endpoints for posts management
+4. events.py                    - 12 endpoints for events management
+5. plans.py                     - 13 endpoints for plans management
+6. custom_fields.py             - 16 endpoints for custom fields
+7. comments.py                  - 3 endpoints for comments
+8. tags.py                      - 6 endpoints for tags
+9. polls.py                     - 6 endpoints for polls
+10. subscriptions.py            - 3 endpoints for subscriptions
+11. purchases.py                - 3 endpoints for purchases
+12. invites.py                  - 5 endpoints for invites
+13. collections.py              - 7 endpoints for collections
+14. badges.py                   - 6 endpoints for badges
+15. assets.py                   - 1 endpoint for assets
+16. abuse_reports.py            - 1 endpoint for abuse reports
+
+## Configuration Files (5 files)
+
+1. setup.py                     - Package setup configuration
+2. pyproject.toml               - Modern Python packaging config
+3. requirements.txt             - Production dependencies
+4. requirements-dev.txt         - Development dependencies
+5. .gitignore                   - Git ignore patterns
+
+## Documentation Files (7 files)
+
+1. README.md                    - Main documentation with examples
+2. API_REFERENCE.md             - Complete API reference
+3. QUICKSTART.md                - Quick start guide
+4. CHANGELOG.md                 - Version history
+5. LICENSE                      - MIT License
+6. CONTRIBUTING.md              - Contribution guidelines
+7. SUMMARY.md                   - Complete package overview
+
+## Example Files (2 files)
+
+1. example_advanced.py          - Advanced usage patterns and helpers
+2. example_data_export.py       - Data export utilities
+
+## Test Files (3 files)
+
+1. test_spaces.py               - Tests for spaces resource
+2. test_members.py              - Tests for members resource
+3. test_exceptions.py           - Tests for exception handling
+
+## Total Files: 38
+
+## Installation Commands
+
+# Install from source
+pip install -e .
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Install dev dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+
+# Format code
+black .
+
+## Usage Example
+
+from mighty_networks_sdk import MightyNetworksClient
+
+client = MightyNetworksClient(api_token="your_token")
+spaces = client.spaces.list(network_id=12345)
