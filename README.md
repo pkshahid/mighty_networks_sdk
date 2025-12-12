@@ -271,9 +271,9 @@ Contributions are welcome! Please follow these steps:
 
 ## 📞 Support
 
-- 🐛 [Report Issues](https://github.com/yourusername/mighty-networks-sdk/issues)
-- 💬 [Discussions](https://github.com/yourusername/mighty-networks-sdk/discussions)
-- 📧 Email: your.email@example.com
+- 🐛 [Report Issues](https://github.com/pkshahid/mighty-networks-sdk/issues)
+- 💬 [Discussions](https://github.com/pkshahid/mighty-networks-sdk/discussions)
+- 📧 Email: shahidmohammedmsp@gmail.com
 
 ## 🎯 Roadmap
 
