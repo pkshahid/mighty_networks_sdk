@@ -47,10 +47,6 @@ mighty-networks-sdk/
 │   ├── CHANGELOG.md                # Version history
 │   └── LICENSE                     # MIT License
 │
-├── Examples
-│   ├── example_advanced.py         # Advanced usage patterns
-│   └── example_data_export.py      # Data export utilities
-│
 └── Tests
     ├── test_spaces.py              # Spaces resource tests
     ├── test_members.py             # Members resource tests
