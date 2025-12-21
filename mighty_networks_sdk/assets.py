@@ -1,6 +1,6 @@
 import os
 from .base_resource import BaseResource
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 """
 Assets Resource
@@ -23,7 +23,7 @@ class AssetsResource(BaseResource):
         file_path: Optional[str] = None,
         asset_style: str = "post",
         source_url: Optional[str] = None,
-        input_type: int = 0,
+        input_type: Optional[Union[int, str]] = None,
         original_aspect_ratio: Optional[str] = None,
         metadata: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
@@ -50,7 +50,9 @@ class AssetsResource(BaseResource):
         if not file_path and not source_url:
             raise ValueError("Provide file_path or source_url")
 
-        data = {"asset_style": asset_style, "input_type": input_type}
+        data = {"asset_style": asset_style}
+        if not input_type == None:
+            data['input_type'] = input_type
         if source_url:
             data["source_url"] = source_url
         if original_aspect_ratio:

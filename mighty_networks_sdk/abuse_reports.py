@@ -18,14 +18,12 @@ class AbuseReportsResource(BaseResource):
     def list(
         self,
         network_id: int,
-        status: str = "pending"
     ) -> Dict[str, Any]:
         """
         List abuse reports in a network.
 
         Args:
             network_id: The network ID
-            status: Filter by status (pending, resolved, dismissed)
 
         Returns:
             List of abuse reports
@@ -33,12 +31,10 @@ class AbuseReportsResource(BaseResource):
         Example:
             >>> client.abuse_reports.list(
             ...     network_id=12345,
-            ...     status="pending"
             ... )
         """
         endpoint = f"/admin/v1/networks/{network_id}/abuse_reports"
         params = {}
-        params['status'] = status
         return self._get(endpoint, params=params)
 
     def get(

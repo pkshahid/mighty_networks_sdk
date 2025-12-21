@@ -18,14 +18,12 @@ class MembersResource(BaseResource):
     def list(
         self,
         network_id: int,
-        space_id: Optional[int] = None
     ) -> Dict[str, Any]:
         """
-        List members in a network or space.
+        List members in a network.
 
         Args:
             network_id: The network ID
-            space_id: The space ID (optional, lists network members if not provided)
 
         Returns:
             List of members
@@ -33,14 +31,8 @@ class MembersResource(BaseResource):
         Example:
             >>> # List all network members
             >>> client.members.list(network_id=12345)
-
-            >>> # List space members
-            >>> client.members.list(network_id=12345, space_id=67890)
         """
-        if space_id:
-            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members"
-        else:
-            endpoint = f"/admin/v1/networks/{network_id}/members"
+        endpoint = f"/admin/v1/networks/{network_id}/members"
 
         params = {}
         return self._get(endpoint, params=params)
@@ -49,7 +41,6 @@ class MembersResource(BaseResource):
         self,
         network_id: int,
         user_id: int,
-        space_id: Optional[int] = None
     ) -> Dict[str, Any]:
         """
         Get a specific member by ID.
@@ -57,7 +48,6 @@ class MembersResource(BaseResource):
         Args:
             network_id: The network ID
             user_id: The user ID
-            space_id: The space ID (optional)
 
         Returns:
             Member details
@@ -66,21 +56,125 @@ class MembersResource(BaseResource):
             >>> client.members.get(
             ...     network_id=12345,
             ...     user_id=99999,
-            ...     space_id=67890
             ... )
         """
-        if space_id:
-            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
-        else:
-            endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
 
         return self._get(endpoint)
+
+    def get_by_email(
+        self,
+        network_id: int,
+        email: str,
+    ) -> Dict[str, Any]:
+        """
+        Get a specific member by email.
+
+        Args:
+            network_id: The network ID
+            email: The user email
+
+        Returns:
+            Member details
+
+        Example:
+            >>> client.members.get(
+            ...     network_id=12345,
+            ...     email=john@mail.com,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/members/by_email?email={email}"
+
+        return self._get(endpoint)
+
+    def create(
+        self,
+        network_id: int,
+        email: str,
+        first_name: str,
+        **kwargs
+    ) -> Dict[str, Any]:
+        """
+        Create a new space.
+
+        Args:
+            network_id: The network ID
+            email: Email of the member
+            first_name: First name of the member
+            **kwargs: Additional member properties (last_name, role)
+
+        Returns:
+            Created space member
+
+        Example:
+            >>> client.members.create(
+            ...     network_id=12345,
+            ...     email="john@mail.com",
+            ...     first_name="John",
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/members"
+        data = {
+            "first_name": first_name,
+            "email": email,
+            **kwargs
+        }
+        return self._post(endpoint, json=data)
+
+    def soft_delete(
+        self,
+        network_id: int,
+        user_id: int,
+    ) -> Dict[str, Any]:
+        """
+        Soft delete a member account
+
+        Args:
+            network_id: The network ID
+            user_id: The member ID
+
+        Returns:
+            empty reponse on success
+
+        Example:
+            >>> client.members.soft_delete(
+            ...     network_id=12345,
+            ...     user_id=23434,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
+
+        return self._delete(endpoint)
+
+    def delete(
+        self,
+        network_id: int,
+        user_id: int,
+    ) -> Dict[str, Any]:
+        """
+        Delete a member account from the network
+
+        Args:
+            network_id: The network ID
+            user_id: The member ID
+
+        Returns:
+            empty reponse on success
+
+        Example:
+            >>> client.members.delete(
+            ...     network_id=12345,
+            ...     user_id=23434,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/network_membership"
+
+        return self._delete(endpoint,)
 
     def update(
         self,
         network_id: int,
         user_id: int,
-        space_id: Optional[int] = None,
         role: Optional[str] = None,
         email: Optional[str] = None,
         first_name: Optional[str] = None,
@@ -93,7 +187,6 @@ class MembersResource(BaseResource):
         Args:
             network_id: The network ID
             user_id: The user ID
-            space_id: The space ID (optional)
             role: Member role (e.g., "member", "moderator", "admin")
             email: Member email
             first_name: Member first name
@@ -107,15 +200,11 @@ class MembersResource(BaseResource):
             >>> client.members.update(
             ...     network_id=12345,
             ...     user_id=99999,
-            ...     space_id=67890,
             ...     role="moderator",
             ...     first_name="John"
             ... )
         """
-        if space_id:
-            endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
-        else:
-            endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/"
 
         data = {k: v for k, v in {
             "role": role,
@@ -126,33 +215,6 @@ class MembersResource(BaseResource):
         }.items() if v is not None}
 
         return self._patch(endpoint, json=data)
-
-    def remove(
-        self,
-        network_id: int,
-        user_id: int,
-        space_id: int
-    ) -> Dict[str, Any]:
-        """
-        Remove a member from a space.
-
-        Args:
-            network_id: The network ID
-            user_id: The user ID
-            space_id: The space ID
-
-        Returns:
-            Empty response on success
-
-        Example:
-            >>> client.members.remove(
-            ...     network_id=12345,
-            ...     user_id=99999,
-            ...     space_id=67890
-            ... )
-        """
-        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members/{user_id}/"
-        return self._delete(endpoint)
 
     def ban(
         self,
@@ -185,48 +247,4 @@ class MembersResource(BaseResource):
         data = {}
         if ban_reason:
             data["ban_reason"] = ban_reason
-        return self._post(endpoint, json=data)
-
-    def add_to_space(
-        self,
-        network_id: int,
-        space_id: int,
-        email: str,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        role: str = "member"
-    ) -> Dict[str, Any]:
-        """
-        Add a member to a space.
-
-        Args:
-            network_id: The network ID
-            space_id: The space ID
-            email: Member email
-            first_name: Member first name (optional)
-            last_name: Member last name (optional)
-            role: Member role (default: "member")
-
-        Returns:
-            Created member details
-
-        Example:
-            >>> client.members.add_to_space(
-            ...     network_id=12345,
-            ...     space_id=67890,
-            ...     email="newmember@example.com",
-            ...     first_name="Jane",
-            ...     role="member"
-            ... )
-        """
-        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/members"
-        data = {
-            "email": email,
-            "role": role
-        }
-        if first_name:
-            data["first_name"] = first_name
-        if last_name:
-            data["last_name"] = last_name
-
         return self._post(endpoint, json=data)

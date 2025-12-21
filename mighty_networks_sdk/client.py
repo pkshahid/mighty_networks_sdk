@@ -21,6 +21,8 @@ from .collections import CollectionsResource
 from .badges import BadgesResource
 from .assets import AssetsResource
 from .abuse_reports import AbuseReportsResource
+from .me import MeResource
+from .network import NetworkResource
 
 
 class MightyNetworksClient:
@@ -50,6 +52,8 @@ class MightyNetworksClient:
         badges: Access to badges resource
         assets: Access to assets resource
         abuse_reports: Access to abuse reports resource
+        me: Access to current authenticated user details
+        network: Access to network details
 
     Example:
         >>> from mighty_networks_sdk import MightyNetworksClient
@@ -110,6 +114,8 @@ class MightyNetworksClient:
         self.badges = BadgesResource(self)
         self.assets = AssetsResource(self)
         self.abuse_reports = AbuseReportsResource(self)
+        self.me = MeResource(self)
+        self.network = NetworkResource(self)
 
     def __repr__(self) -> str:
         """Return string representation of the client."""

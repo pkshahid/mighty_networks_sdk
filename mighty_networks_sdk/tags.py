@@ -55,7 +55,7 @@ class TagsResource(BaseResource):
     def create(
         self,
         network_id: int,
-        name: str,
+        title: str,
         **kwargs
     ) -> Dict[str, Any]:
         """
@@ -63,7 +63,7 @@ class TagsResource(BaseResource):
 
         Args:
             network_id: The network ID
-            name: Tag name
+            title: Tag name
             **kwargs: Additional tag properties
 
         Returns:
@@ -72,11 +72,11 @@ class TagsResource(BaseResource):
         Example:
             >>> client.tags.create(
             ...     network_id=12345,
-            ...     name="Announcements"
+            ...     title="Announcements"
             ... )
         """
         endpoint = f"/admin/v1/networks/{network_id}/tags"
-        data = {"name": name, **kwargs}
+        data = {"title": title, **kwargs}
         return self._post(endpoint, json=data)
 
     def update(
@@ -100,7 +100,7 @@ class TagsResource(BaseResource):
             >>> client.tags.update(
             ...     network_id=12345,
             ...     tag_id=555,
-            ...     name="Updated Tag Name"
+            ...     title="Updated Tag Name"
             ... )
         """
         endpoint = f"/admin/v1/networks/{network_id}/tags/{tag_id}/"

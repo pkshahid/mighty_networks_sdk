@@ -140,6 +140,41 @@ class CollectionsResource(BaseResource):
         endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/"
         return self._delete(endpoint)
 
+    def reorder_spaces(
+        self,
+        network_id: int,
+        collection_id: int,
+        data: list
+    ) -> Dict[str, Any]:
+        """
+        Reorder spaces in collection
+
+        Args:
+            network_id: The network ID
+            collection_id: Collection id
+            data: List of space & position dictionaries
+
+        Returns:
+            Reordered items list
+
+        Example:
+            >>> client.collections.reorder_spaces(
+            ...     network_id=12345,
+            ...     collection_id=34232,
+            ...     data = [
+            ...                 {
+            ...                     "space_id": 123,
+            ...                     "position": 1
+            ...                 }
+            ...             ]
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/collections/{collection_id}/order"
+        data = {"spaces": data}
+
+        return self._put(endpoint, json=data)
+
+
     def add_item(
         self,
         network_id: int,

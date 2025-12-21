@@ -52,12 +52,12 @@ class BadgesResource(BaseResource):
         endpoint = f"/admin/v1/networks/{network_id}/badges/{badge_id}/"
         return self._get(endpoint)
 
-def create(self, network_id: int, title: str, description: str = "", avatar_id: int = None, color: str = None):
-    endpoint = f"/admin/v1/networks/{network_id}/badges"
-    data = {"title": title, "description": description}
-    if avatar_id is not None: data["avatar_id"] = avatar_id
-    if color is not None: data["color"] = color
-    return self._post(endpoint, json=data)
+    def create(self, network_id: int, title: str, description: str = "", avatar_id: int = None, color: str = None):
+        endpoint = f"/admin/v1/networks/{network_id}/badges"
+        data = {"title": title, "description": description}
+        if avatar_id is not None: data["avatar_id"] = avatar_id
+        if color is not None: data["color"] = color
+        return self._post(endpoint, json=data)
 
 
     def update(
