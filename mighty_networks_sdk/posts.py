@@ -42,7 +42,6 @@ class PostsResource(BaseResource):
     def get(
         self,
         network_id: int,
-        space_id: int,
         post_id: int
     ) -> Dict[str, Any]:
         """
@@ -50,7 +49,6 @@ class PostsResource(BaseResource):
 
         Args:
             network_id: The network ID
-            space_id: The space ID
             post_id: The post ID
 
         Returns:
@@ -59,11 +57,10 @@ class PostsResource(BaseResource):
         Example:
             >>> client.posts.get(
             ...     network_id=12345,
-            ...     space_id=67890,
             ...     post_id=11111
             ... )
         """
-        endpoint = f"/admin/v1/networks/{network_id}/spaces/{space_id}/posts/{post_id}/"
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/"
         return self._get(endpoint)
 
     def create(
@@ -96,7 +93,7 @@ class PostsResource(BaseResource):
             ...     network_id=12345,
             ...     space_id=67890,
             ...     title="Welcome to the Community!",
-            ...     content="Hello everyone, excited to be here.",
+            ...     description="Hello everyone, excited to be here.",
             ...     is_pinned=True
             ... )
         """
@@ -105,7 +102,7 @@ class PostsResource(BaseResource):
             endpoint += "?notify=true"
         data = {
             "title": title,
-            "description": content,
+            "description": description,
             "post_type": post_type,
             "space_id" : space_id,
             **kwargs
@@ -115,7 +112,6 @@ class PostsResource(BaseResource):
     def update(
         self,
         network_id: int,
-        space_id: int,
         post_id: int,
         notify: bool = False,
         **kwargs
@@ -125,7 +121,6 @@ class PostsResource(BaseResource):
 
         Args:
             network_id: The network ID
-            space_id: The space ID
             post_id: The post ID
             notify: Should notify?
             **kwargs: Post properties to update
@@ -136,7 +131,6 @@ class PostsResource(BaseResource):
         Example:
             >>> client.posts.update(
             ...     network_id=12345,
-            ...     space_id=67890,
             ...     post_id=11111,
             ...     title="Updated Title",
             ...     description="Updated description"
@@ -150,7 +144,6 @@ class PostsResource(BaseResource):
     def delete(
         self,
         network_id: int,
-        space_id: int,
         post_id: int
     ) -> Dict[str, Any]:
         """
@@ -158,7 +151,6 @@ class PostsResource(BaseResource):
 
         Args:
             network_id: The network ID
-            space_id: The space ID
             post_id: The post ID
 
         Returns:
@@ -167,10 +159,63 @@ class PostsResource(BaseResource):
         Example:
             >>> client.posts.delete(
             ...     network_id=12345,
-            ...     space_id=67890,
             ...     post_id=11111
             ... )
         """
         endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/"
         return self._delete(endpoint)
 
+
+    def mute(
+        self,
+        network_id: int,
+        post_id: int,
+        user_id: int,
+    ) -> Dict[str, Any]:
+        """
+        Mute a post for a specific user (unfollow notifications).
+
+        Args:
+            network_id: The network ID
+            post_id: The post ID
+            user_id: The user ID
+
+        Returns:
+            Post successfully muted for the user
+
+        Example:
+            >>> client.posts.mute(
+            ...     network_id=12345,
+            ...     post_id=67890,
+            ...     user_id=23423423,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/mute?user_id={user_id}"
+        return self._post(endpoint)
+
+    def unmute(
+        self,
+        network_id: int,
+        post_id: int,
+        user_id: int,
+    ) -> Dict[str, Any]:
+        """
+        Unute a post for a specific user.
+
+        Args:
+            network_id: The network ID
+            post_id: The post ID
+            user_id: The user ID
+
+        Returns:
+            Post successfully unmuted for the user
+
+        Example:
+            >>> client.posts.unmute(
+            ...     network_id=12345,
+            ...     post_id=67890,
+            ...     user_id=23423423,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/posts/{post_id}/mute?user_id={user_id}"
+        return self._delete(endpoint)

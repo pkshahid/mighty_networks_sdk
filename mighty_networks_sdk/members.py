@@ -167,7 +167,7 @@ class MembersResource(BaseResource):
             ...     user_id=23434,
             ... )
         """
-        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/network_membership"
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/network_membership?cancel_plans=true"
 
         return self._delete(endpoint,)
 
@@ -248,3 +248,27 @@ class MembersResource(BaseResource):
         if ban_reason:
             data["ban_reason"] = ban_reason
         return self._post(endpoint, json=data)
+
+    def reset_password(
+        self,
+        network_id: int,
+        user_id: int,
+    ) -> Dict[str, Any]:
+        """
+        Send password Reset mail for a user.
+
+        Args:
+            network_id: The network ID
+            user_id: The user ID to ban
+
+        Returns:
+            Empty response on success
+
+        Example:
+            >>> client.members.reset_password(
+            ...     network_id=12345,
+            ...     user_id=99999,
+            ... )
+        """
+        endpoint = f"/admin/v1/networks/{network_id}/members/{user_id}/password_resets"
+        return self._post(endpoint)
